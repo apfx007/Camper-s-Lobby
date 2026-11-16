@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#10131b">
 <meta name="description" content="Monitor a public YouTube livestream chat and send keyword alerts to Telegram.">
-<title>ChatWatch — YouTube to Telegram</title>
+<title>CAMPER'S LOBBY</title>
 <style>
 :root{color-scheme:dark;--bg:#0c0f16;--panel:#151a25;--panel2:#101520;--line:#293244;--text:#edf2fa;--muted:#9aa7ba;--accent:#70a5ff;--green:#40d6a0;--red:#ff6b78;--yellow:#f3c96a;--radius:14px}
 *{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font:14px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}body{padding:env(safe-area-inset-top) 10px env(safe-area-inset-bottom)}
@@ -17,7 +17,7 @@ main{width:min(100%,680px);margin:0 auto;padding:10px 0 24px}.top{display:flex;a
 <body>
 <main>
   <header class="top">
-    <div class="brand"><div class="logo">◉</div><div><h1>ChatWatch</h1><small>YouTube live chat → Telegram alerts</small></div></div>
+    <div class="brand"><div class="logo">◉</div><div><h1>CAMPER'S LOBBY</h1><small>YouTube live chat → Telegram alerts</small></div></div>
     <div id="statePill" class="pill">● STOPPED</div>
   </header>
 
@@ -43,11 +43,11 @@ main{width:min(100%,680px);margin:0 auto;padding:10px 0 24px}.top{display:flex;a
       <div class="field"><label for="userFilter">Only alert these users (optional)</label><input id="userFilter" placeholder="@Nightbot, @StreamAdmin"></div>
     </div>
     <p class="hint">Blank user filter = everyone. Handles are resolved to channel IDs when possible; display names and channel IDs are also supported.</p>
-    <div class="field" style="margin-top:11px"><label for="keywordRules">Keyword → Telegram alert messages</label><textarea id="keywordRules" spellcheck="false" placeholder="fire = 🔥 Fire alert || Notify team now\nentry = Possible entry detected\nfir word now = message1 || message2 || message3 || message4 || message5"></textarea><p class="hint">One rule per line. Matching is case-insensitive. Use <code>||</code> to send multiple separate Telegram messages for one keyword. Each message also includes the author and original chat text.</p></div>
+    <div class="field" style="margin-top:11px"><label for="keywordRules">Keyword → Telegram alert messages</label><textarea id="keywordRules" spellcheck="false" placeholder="fire = 🔥 Fire alert || Notify team now\nentry [no-sleep] = Possible entry detected\ndone = Normal alert with 15-minute sleep"></textarea><p class="hint">One rule per line. Matching is case-insensitive. Use <code>||</code> to send multiple separate Telegram messages. Add <code>[no-sleep]</code> after a keyword when that match should not start the 15-minute sleep. Other keywords use the normal sleep.</p></div>
     <div class="buttons"><button id="startBtn" class="primary">▶ Start monitoring</button><button id="stopBtn" class="stop" disabled>■ Stop</button></div>
     <div id="runStatus" class="statusline">Ready. Monitoring starts when you press Start.</div>
     <div class="stats"><div class="stat"><b id="elapsed">00:00:00</b><small>RUN TIME</small></div><div class="stat"><b id="matches">0</b><small>MATCHED CHAT MESSAGES</small></div><div class="stat"><b id="sent">0</b><small>TELEGRAM MESSAGES SENT</small></div></div>
-    <p class="hint" id="quotaUsage">YouTube chat polling costs 5 quota units per request. At 15-second intervals that is up to 1,200 units per active hour; the app also sleeps for 15 minutes after each match cycle.</p>
+    <p class="hint" id="quotaUsage">YouTube chat polling costs 5 quota units per request. At 15-second intervals that is up to 1,200 units per active hour; matching keywords normally start a 15-minute sleep unless marked [no-sleep].</p>
     <div class="notice">Keep this page open and visible in split-screen for best results. Screen Wake Lock prevents the display from sleeping while this page is visible; it does not keep Android or Chrome running in the background.</div>
   </section>
 
@@ -123,9 +123,9 @@ main{width:min(100%,680px);margin:0 auto;padding:10px 0 24px}.top{display:flex;a
     for(const [i,line] of $('keywordRules').value.split(/\r?\n/).entries()){
       const t=line.trim(); if(!t || t.startsWith('#')) continue;
       const eq=t.indexOf('='); if(eq<1) throw new Error('Rule line '+(i+1)+' must use: keyword = alert text');
-      const keyword=t.slice(0,eq).trim(); const messages=t.slice(eq+1).split('||').map(x=>x.trim()).filter(Boolean);
+      const keywordText=t.slice(0,eq).trim(); const skipSleep=/\s+\[no-sleep\]$/i.test(keywordText); const keyword=keywordText.replace(/\s+\[no-sleep\]$/i,'').trim(); const messages=t.slice(eq+1).split('||').map(x=>x.trim()).filter(Boolean);
       if(!keyword || !messages.length) throw new Error('Rule line '+(i+1)+' needs a keyword and at least one alert message.');
-      out.push({keyword:keyword.toLocaleLowerCase(),messages});
+      out.push({keyword:keyword.toLocaleLowerCase(),messages,skipSleep});
     }
     if(!out.length) throw new Error('Add at least one keyword rule.');
     return out;
@@ -189,7 +189,7 @@ main{width:min(100%,680px);margin:0 auto;padding:10px 0 24px}.top{display:flex;a
     const hits=ruleList.filter(r=>text.toLocaleLowerCase().includes(r.keyword));
     if(!hits.length) return;
     matchedCount++; $('matches').textContent=matchedCount;
-    if(!postMatchMonitorUntil){
+    if(hits.some(r=>!r.skipSleep) && !postMatchMonitorUntil){
       postMatchMonitorUntil=Date.now()+POST_MATCH_MONITOR_MS;
       log('Match cycle started: monitoring will continue for 2 minutes, then sleep for 15 minutes.','warn');
     }
