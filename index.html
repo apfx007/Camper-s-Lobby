@@ -17,7 +17,7 @@ main{width:min(100%,680px);margin:0 auto;padding:10px 0 24px}.top{display:flex;a
 <body>
 <main>
   <header class="top">
-    <div class="brand"><div class="logo">◉</div><div><h1>CAMPER'S LOBBY</h1><small>YouTube live chat → Telegram alerts</small></div></div>
+    <div class="brand"><div class="logo">◉</div><div><h1>CAMPER'S LOBBY</h1><small>Enjoy Camping :)</small></div></div>
     <div id="statePill" class="pill">● STOPPED</div>
   </header>
 
@@ -26,29 +26,29 @@ main{width:min(100%,680px);margin:0 auto;padding:10px 0 24px}.top{display:flex;a
     <details id="credentialsDetails" open>
       <summary>YouTube & Telegram credentials</summary>
       <div class="inside">
-        <div class="field"><label for="apiKey">YouTube Data API v3 key</label><div class="input-row"><input id="apiKey" type="password" autocomplete="off" placeholder="Google API key"><button class="mini" data-toggle="apiKey">SHOW</button></div></div>
-        <div class="field"><label for="botToken">Telegram bot token</label><div class="input-row"><input id="botToken" type="password" autocomplete="off" placeholder="123456:ABC..."><button class="mini" data-toggle="botToken">SHOW</button></div></div>
-        <div class="field"><label for="chatId">Telegram chat ID</label><input id="chatId" autocomplete="off" placeholder="Your numeric user ID or group ID"></div>
-        <div class="buttons"><button id="testTelegram" class="secondary">Test Telegram</button><button id="saveNow" class="ghost">Save settings</button></div>
+        <div class="field"><label for="apiKey">YT</label><div class="input-row"><input id="apiKey" type="password" autocomplete="off" placeholder="Google API key"><button class="mini" data-toggle="apiKey">SHOW</button></div></div>
+        <div class="field"><label for="botToken">TGBT</label><div class="input-row"><input id="botToken" type="password" autocomplete="off" placeholder="123456:ABC..."><button class="mini" data-toggle="botToken">SHOW</button></div></div>
+        <div class="field"><label for="chatId">TGCID</label><input id="chatId" autocomplete="off" placeholder="Your numeric user ID or group ID"></div>
+        <div class="buttons"><button id="testTelegram" class="secondary">Welcome Message</button><button id="saveNow" class="ghost">Save settings</button></div>
         <div id="connectionStatus" class="statusline">Credentials are stored in this browser's localStorage.</div>
       </div>
     </details>
   </section>
 
   <section class="panel">
-    <div class="section-head"><h2>2 · Daily monitor</h2><span>Public live streams only</span></div>
-    <div class="field"><label for="streamUrl">YouTube livestream URL</label><input id="streamUrl" inputmode="url" placeholder="https://www.youtube.com/watch?v=..."></div>
+    <div class="section-head"><h2>2 · CAMPING SETUP</h2><span>⚙️</span></div>
+    <div class="field"><label for="streamUrl">YouTube URL</label><input id="streamUrl" inputmode="url" placeholder="https://www.youtube.com/watch?v=..."></div>
     <div class="grid2">
-      <div class="field"><label for="stopHours">Auto-stop after (hours)</label><input id="stopHours" type="number" min="0.25" max="24" step="0.25" value="4.5"></div>
-      <div class="field"><label for="userFilter">Only alert these users (optional)</label><input id="userFilter" placeholder="@Nightbot, @StreamAdmin"></div>
+      <div class="field"><label for="stopHours">Auto stop (Hr)</label><input id="stopHours" type="number" min="0.25" max="24" step="0.25" value="4.5"></div>
+      <div class="field"><label for="userFilter">Target Users</label><input id="userFilter" placeholder="@Nightbot, @StreamAdmin"></div>
     </div>
-    <p class="hint">Blank user filter = everyone. Handles are resolved to channel IDs when possible; display names and channel IDs are also supported.</p>
-    <div class="field" style="margin-top:11px"><label for="keywordRules">Keyword → Telegram alert messages</label><textarea id="keywordRules" spellcheck="false" placeholder="fire = 🔥 Fire alert || Notify team now\nentry [no-sleep] = Possible entry detected\ndone = Normal alert with 15-minute sleep"></textarea><p class="hint">One rule per line. Matching is case-insensitive. Use <code>||</code> to send multiple separate Telegram messages. Add <code>[no-sleep]</code> after a keyword when that match should not start the 15-minute sleep. Other keywords use the normal sleep.</p></div>
+    <p class="hint">Blank = everyone.</p>
+    <div class="field" style="margin-top:11px"><label for="keywordRules">Keywords</label><textarea id="keywordRules" spellcheck="false" placeholder="fire = 🔥 Fire alert || Notify team now\nentry [no-sleep] = Possible entry detected\ndone = Normal alert with 15-minute sleep"></textarea><p class="hint">One rule per line. Matching is case-insensitive. Use <code>||</code> to send multiple messages. Add <code>[no-sleep]</code> after a keyword to avoid sleep cycle. Other keywords use the normal sleep.</p></div>
     <div class="buttons"><button id="startBtn" class="primary">▶ Start monitoring</button><button id="stopBtn" class="stop" disabled>■ Stop</button></div>
     <div id="runStatus" class="statusline">Ready. Monitoring starts when you press Start.</div>
     <div class="stats"><div class="stat"><b id="elapsed">00:00:00</b><small>RUN TIME</small></div><div class="stat"><b id="matches">0</b><small>MATCHED CHAT MESSAGES</small></div><div class="stat"><b id="sent">0</b><small>TELEGRAM MESSAGES SENT</small></div></div>
     <p class="hint" id="quotaUsage">YouTube chat polling costs 5 quota units per request. At 15-second intervals that is up to 1,200 units per active hour; matching keywords normally start a 15-minute sleep unless marked [no-sleep].</p>
-    <div class="notice">Keep this page open and visible in split-screen for best results. Screen Wake Lock prevents the display from sleeping while this page is visible; it does not keep Android or Chrome running in the background.</div>
+    <div class="notice">Keep this page open all the TIME.</div>
   </section>
 
   <section class="panel">
@@ -56,7 +56,7 @@ main{width:min(100%,680px);margin:0 auto;padding:10px 0 24px}.top{display:flex;a
     <div id="log" class="log" aria-live="polite"><div class="log-item"><span class="log-time">[ready]</span> Waiting to start.</div></div>
   </section>
 
-  <div class="footer">No server is used. API calls run from this browser. Secrets are stored locally on this device, not encrypted. Do not share this page while credentials are entered.</div>
+  <div class="footer">©apfx007 2026</div>
 </main>
 <script>
 (() => {
@@ -166,7 +166,7 @@ main{width:min(100%,680px);margin:0 auto;padding:10px 0 24px}.top{display:flex;a
   }
   $('testTelegram').addEventListener('click', async () => {
     $('testTelegram').disabled=true;
-    try{ const {chat}=telegramCredentials(); await telegramCall('sendMessage',{chat_id:chat,text:'✅ ChatWatch test: Telegram connection is working.'}); connectionStatus('Telegram test message sent.','good'); log('Telegram test message sent.','ok'); }
+    try{ const {chat}=telegramCredentials(); await telegramCall('sendMessage',{chat_id:chat,text:'Welcome Campers, Camping Session is starting, Good Luck ❤️'}); connectionStatus('Telegram test message sent.','good'); log('Telegram test message sent.','ok'); }
     catch(e){ connectionStatus(e.message,'bad'); log('Telegram test failed: '+e.message,'error'); }
     finally{$('testTelegram').disabled=false; saveSettings();}
   });
